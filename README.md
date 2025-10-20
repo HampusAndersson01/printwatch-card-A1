@@ -83,13 +83,13 @@ This is a fork of the original PrintWatch Card by [drkpxl](https://github.com/dr
 
 If you prefer not to use HACS:
 
-1. Download the `dist/printwatch-card.js` file from this repository
+1. Download the `dist/printwatch-a1-card.js` file from this repository
 2. Copy it to your `config/www/` directory in Home Assistant
 3. Add the resource in your Home Assistant configuration:
    ```yaml
    lovelace:
      resources:
-       - url: /local/printwatch-card.js
+       - url: /local/printwatch-a1-card.js
          type: module
    ```
 4. Restart Home Assistant

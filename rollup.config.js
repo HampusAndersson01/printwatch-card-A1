@@ -15,11 +15,11 @@ const timestamp = new Date().getTime();
 export default {
   input: 'src/index.js',
   output: {
-    file: 'dist/printwatch-card.js',
+    file: 'dist/printwatch-a1-card.js',
     format: 'es',
     sourcemap: true,
     banner: `/**
- * PrintWatch Card ${pkg.version}
+ * Printwatch A1 Card ${pkg.version}
  * Built: ${new Date().toISOString()}
  */`
   },

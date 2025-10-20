@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "A Home Assistant card for A1 series 3D printers",
   "type": "module",
-  "main": "dist/printwatch-card.js",
+  "main": "dist/printwatch-a1-card.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch",
