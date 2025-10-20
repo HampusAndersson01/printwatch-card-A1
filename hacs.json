@@ -1,6 +1,6 @@
 {
   "name": "Printwatch A1 Card",
   "render_readme": true,
-  "filename": "dist/printwatch-a1-card.js",
+  "filename": "printwatch-a1-card.js",
   "content_in_root": false
 }
