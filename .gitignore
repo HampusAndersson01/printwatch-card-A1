@@ -5,7 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build
-# dist/ - Now committed for HACS
+# dist/ - Now committed for HACS (except source maps)
+dist/*.map
 
 # Editor directories and files
 .idea

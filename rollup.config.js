@@ -19,7 +19,7 @@ export default {
   output: {
     file: "dist/printwatch-a1-card.js",
     format: "es",
-    sourcemap: true,
+    sourcemap: false,
     banner: `/**
  * Printwatch A1 Card ${pkg.version}
  * Built: ${new Date().toISOString()}
