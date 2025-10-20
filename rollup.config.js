@@ -71,7 +71,7 @@ export default {
     }),
     terser({
       format: {
-        comments: /PrintWatch Card/,
+        comments: /Printwatch A1 Card/,
       },
     }),
   ],
