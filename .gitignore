@@ -31,3 +31,6 @@ codebase.md
 
 # Sample API
 entity_example.json
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

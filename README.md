@@ -1,14 +1,30 @@
-# PrintWatch Card
+# Printwatch A1 Card
 
-A feature-rich Home Assistant card for monitoring and controlling your P1S 3D printer. Get real-time updates on print progress, temperatures, material status, and more with a sleek, user-friendly interface.
+**Fork of [PrintWatch Card](https://github.com/drkpxl/printwatch-card)** - Modified specifically for A1 series 3D printers.
 
-### Light Mode 
+A feature-rich Home Assistant card for monitoring and controlling your A1 series 3D printer. Get real-time updates on print progress, temperatures, material status, and more with a sleek, user-friendly interface.
+
+## About This Fork
+
+This is a fork of the original PrintWatch Card by [drkpxl](https://github.com/drkpxl), specifically adapted for A1 series 3D printers. Key changes include:
+
+- Updated sensor naming conventions for A1 printers
+- Optimized material slot handling
+- Enhanced time formatting for decimal hour inputs
+- A1-specific configuration examples
+
+**Original Project**: [PrintWatch Card by drkpxl](https://github.com/drkpxl/printwatch-card)
+
+### Light Mode
+
 ![PrintWatch Card Screenshot](assets/light-mode-min.png)
 
 ### Dark Mode
-![PrintWatch Dark Mode](assets/dark-mode-min.png)  
+
+![PrintWatch Dark Mode](assets/dark-mode-min.png)
 
 ### German Example
+
 ![PrintWatch Nord](assets/german.png)
 
 ## Features
@@ -24,88 +40,107 @@ A feature-rich Home Assistant card for monitoring and controlling your P1S 3D pr
 - 🌡️ Real-time temperature monitoring and control for bed and nozzle
 - 📷 G-Code preview image (requires HA Bambu Lab plugin update)
 - 🏷️ Display print weight and length details
--🌍 Localization support (initial translations in German, more contributions welcome!)
-pa
+  -🌍 Localization support (initial translations in German, more contributions welcome!)
+  pa
+
 ## Prerequisites
 
 - Home Assistant
-- P1S Printer integration configured in Home Assistant using [ha-bambulab]((https://github.com/greghesp/ha-bambulab)) plugin
+- A1 Printer integration configured in Home Assistant using [ha-bambulab](<(https://github.com/greghesp/ha-bambulab)>) plugin
 - Required entities set up (see Configuration section)
 - Image sensor toggle turned on
 
 ![Image Screenshot](assets/image-toggle.png)
 
-
 ## Installation
 
-### HACS (Recommended) - Awaiting approval from HACS, follow manual
+### HACS Custom Repository (Recommended)
 
-1. Open HACS in Home Assistant
-2. Click on "Frontend" section
-3. Click the "+ Explore & Download Repositories" button
-4. Search for "PrintWatch Card"
-5. Click "Download"
-6. Restart Home Assistant
+1. **Open HACS in Home Assistant**
 
-### Manual Installation
+   - Navigate to HACS in your Home Assistant sidebar
 
-1. Navigate to HACS
-2. Tap 3 buttons in top right and select custom repositories
-3. Paste `https://github.com/drkpxl/printwatch-card` and select `dashboard`
-4. Save
-5. Select printwatch-card in HACS listing and click download
-6. Navigate to settings and install card if needed there.
-7. Restart Home Assistant
-8. Clear Browser cache if using previous version
+2. **Add Custom Repository**
+
+   - Click the **three-dot menu (⋮)** in the top-right corner of HACS
+   - Select **"Custom repositories"**
+   - In the **"Repository"** field, paste: `https://github.com/HampusAndersson01/printwatch-card-A1`
+   - In the **"Category"** dropdown, select **"Dashboard"**
+   - Click **"Add"**
+
+3. **Install the Card**
+
+   - Go to the **"Frontend"** section in HACS
+   - Search for **"Printwatch A1 Card"**
+   - Click on it and select **"Download"**
+   - Restart Home Assistant when prompted
+
+4. **Clear Browser Cache**
+   - Clear your browser cache to ensure the new card loads properly
+   - On most browsers: Ctrl+F5 (Windows/Linux) or Cmd+Shift+R (Mac)
+
+### Alternative: Manual Installation
+
+If you prefer not to use HACS:
+
+1. Download the `dist/printwatch-card.js` file from this repository
+2. Copy it to your `config/www/` directory in Home Assistant
+3. Add the resource in your Home Assistant configuration:
+   ```yaml
+   lovelace:
+     resources:
+       - url: /local/printwatch-card.js
+         type: module
+   ```
+4. Restart Home Assistant
 
 ## Configuration
 
 Add the card to your dashboard with this basic configuration:
-
 
 ## Configuration
 
 Add the card to your dashboard with this basic configuration:
 
 ```yaml
-type: custom:printwatch-card
-printer_name: P1S
-camera_refresh_rate: 1000  # Refresh rate in milliseconds (1 second)
-print_status_entity: sensor.p1s_print_status
-current_stage_entity: sensor.p1s_current_stage
-task_name_entity: sensor.p1s_task_name
-progress_entity: sensor.p1s_print_progress
-current_layer_entity: sensor.p1s_current_layer
-total_layers_entity: sensor.p1s_total_layer_count
-remaining_time_entity: sensor.p1s_remaining_time
-bed_temp_entity: sensor.p1s_bed_temperature
-nozzle_temp_entity: sensor.p1s_nozzle_temperature
-bed_target_temp_entity: number.p1s_bed_target_temperature
-nozzle_target_temp_entity: number.p1s_nozzle_target_temperature
-speed_profile_entity: select.p1s_printing_speed
-ams_slot1_entity: sensor.p1s_ams_tray_1
-ams_slot2_entity: sensor.p1s_ams_tray_2
-ams_slot3_entity: sensor.p1s_ams_tray_3
-ams_slot4_entity: sensor.p1s_ams_tray_4
-ams_slot5_entity: sensor.p1s_ams_tray_5
-...
-camera_entity: image.p1s_camera
-cover_image_entity: image.p1s_cover_image
-pause_button_entity: button.p1s_pause_printing
-resume_button_entity: button.p1s_resume_printing
-stop_button_entity: button.p1s_stop_printing
-chamber_light_entity: light.p1s_chamber_light
-aux_fan_entity: fan.p1s_aux_fan
-print_weight_entity: sensor.p1s_print_weight
-print_length_entity: sensor.p1s_print_length
+type: custom:printwatch-a1-card
+printer_name: A1
+camera_refresh_rate: 1000 # Refresh rate in milliseconds (1 second)
+print_status_entity: sensor.a1_print_status
+current_stage_entity: sensor.a1_current_stage
+task_name_entity: sensor.a1_task_name
+progress_entity: sensor.a1_print_progress
+current_layer_entity: sensor.a1_current_layer
+total_layers_entity: sensor.a1_total_layer_count
+remaining_time_entity: sensor.a1_remaining_time
+bed_temp_entity: sensor.a1_bed_temperature
+nozzle_temp_entity: sensor.a1_nozzle_temperature
+bed_target_temp_entity: number.a1_bed_target_temperature
+nozzle_target_temp_entity: number.a1_nozzle_target_temperature
+speed_profile_entity: select.a1_printing_speed
+ams_slot1_entity: sensor.a1_ams_tray_1
+ams_slot2_entity: sensor.a1_ams_tray_2
+ams_slot3_entity: sensor.a1_ams_tray_3
+ams_slot4_entity: sensor.a1_ams_tray_4
+ams_slot5_entity: sensor.a1_ams_tray_5
+---
+camera_entity: image.a1_camera
+cover_image_entity: image.a1_cover_image
+pause_button_entity: button.a1_pause_printing
+resume_button_entity: button.a1_resume_printing
+stop_button_entity: button.a1_stop_printing
+chamber_light_entity: light.a1_chamber_light
+aux_fan_entity: fan.a1_aux_fan
+print_weight_entity: sensor.a1_print_weight
+print_length_entity: sensor.a1_print_length
 ```
-
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. **Card not appearing**
+
    - Check that all required entities exist and are correctly named
    - Verify resources are properly loaded in HA
 
@@ -117,6 +152,7 @@ print_length_entity: sensor.p1s_print_length
 ![Image Screenshot](assets/image-toggle.png)
 
 3. **Controls not working**
+
    - Verify that your user has proper permissions for the entities
    - Check that button entities are available and not in an error state
 
@@ -126,7 +162,6 @@ print_length_entity: sensor.p1s_print_length
 5. **Localization issues**
    - Some translations are AI-generated; if you notice errors, consider submitting improvements!
 
-
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
@@ -134,9 +169,11 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 ## Support
 
 If you're having issues, please:
+
 1. Check the Troubleshooting section above
-2. Search existing [GitHub issues](https://github.com/yourusername/printwatch-card/issues)
+2. Search existing [GitHub issues](https://github.com/HampusAndersson01/printwatch-card-A1/issues)
 3. Create a new issue if your problem isn't already reported
+4. For issues related to the original PrintWatch Card, check the [upstream repository](https://github.com/drkpxl/printwatch-card)
 
 ## License
 
@@ -144,8 +181,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [Greg Hesp](https://github.com/greghesp/ha-bambulab) maker of [ha-bambulab]((https://github.com/greghesp/ha-bambulab)) without this plugin wouldn't work
-- Thanks to all P1S users who provided feedback and testing
+- **Original Author**: [drkpxl](https://github.com/drkpxl) for creating the [original PrintWatch Card](https://github.com/drkpxl/printwatch-card)
+- [Greg Hesp](https://github.com/greghesp/ha-bambulab) maker of [ha-bambulab](<(https://github.com/greghesp/ha-bambulab)>) without this plugin wouldn't work
+- Thanks to all A1 and P1S users who provided feedback and testing
 - Inspired by the great Home Assistant community
 
 ---

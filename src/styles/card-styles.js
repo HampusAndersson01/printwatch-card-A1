@@ -1,5 +1,5 @@
 // src/styles/card-styles.js
-import { css } from 'lit';
+import { css } from "lit";
 
 export const cardStyles = css`
   /* Print preview */
@@ -51,7 +51,12 @@ export const cardStyles = css`
     background: var(--ha-card-background, var(--card-background-color));
     border-radius: var(--ha-card-border-radius, 12px);
     padding: 16px;
-    font-family: var(--primary-font-family, -apple-system, BlinkMacSystemFont, sans-serif);
+    font-family: var(
+      --primary-font-family,
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif
+    );
     position: relative;
     overflow: hidden;
   }
@@ -152,7 +157,11 @@ export const cardStyles = css`
     padding: 4px 8px;
     border-radius: 8px;
     font-size: 16px;
-    background-color: color-mix(in srgb, var(--card-background-color) 80%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--card-background-color) 80%,
+      transparent
+    );
     text-transform: capitalize;
   }
 
@@ -233,17 +242,25 @@ export const cardStyles = css`
   }
 
   /* Temperature Display */
-    .temperatures {
+  .temperatures {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    margin-bottom: 32px;
-    padding-bottom: 32px;
     position: relative;
   }
 
-  .temperatures::after {
-    content: '';
+  .temperatures.has-materials {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+  }
+
+  .temperatures.no-materials {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .temperatures.has-materials::after {
+    content: "";
     position: absolute;
     bottom: 0;
     left: 20%;
@@ -358,7 +375,7 @@ export const cardStyles = css`
   .material-circle.active {
     transform: scale(1.1);
     box-shadow: 0 0 0 2px var(--primary-background-color),
-                0 0 0 4px var(--primary-color);
+      0 0 0 4px var(--primary-color);
   }
 
   .material-type {

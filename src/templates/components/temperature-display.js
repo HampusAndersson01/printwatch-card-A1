@@ -1,39 +1,45 @@
-import { html } from 'lit';
-import { localize } from '../../utils/localize';
-import { formatTemperature } from '../../utils/formatters';
-import { temperatureDialogTemplate } from './temperature-controls';
+import { html } from "lit";
+import { localize } from "../../utils/localize";
+import { formatTemperature } from "../../utils/formatters";
+import { temperatureDialogTemplate } from "./temperature-controls";
 
-export const temperatureDisplayTemplate = (entities, hass, dialogConfig = {}, setDialogConfig) => {
+export const temperatureDisplayTemplate = (
+  entities,
+  hass,
+  dialogConfig = {},
+  setDialogConfig,
+  hasMaterials = false
+) => {
   const handleControlClick = (type, currentValue, entityId) => {
     let config = {
       open: true,
       type,
       currentValue,
       entityId,
-      onClose: () => setDialogConfig({ open: false })
+      onClose: () => setDialogConfig({ open: false }),
     };
 
     switch (type) {
-      case 'bed':
+      case "bed":
         config = {
           ...config,
-          title: localize.t('temperatures.bed_target'),
+          title: localize.t("temperatures.bed_target"),
           min: 0,
-          max: 120
+          max: 120,
         };
         break;
-      case 'nozzle':
+      case "nozzle":
         config = {
           ...config,
-          title: localize.t('temperatures.nozzle_target'),
+          title: localize.t("temperatures.nozzle_target"),
           min: 0,
-          max: 320
+          max: 320,
         };
         break;
-      case 'speed':
+      case "speed":
         config = {
           ...config,
-          title: localize.t('temperatures.speed_profile')
+          title: localize.t("temperatures.speed_profile"),
         };
         break;
     }
@@ -42,40 +48,65 @@ export const temperatureDisplayTemplate = (entities, hass, dialogConfig = {}, se
   };
 
   // Get temperature units from sensors
-  const bedTempUnit = hass.states[entities.bed_temp_entity]?.attributes?.unit_of_measurement || '°C';
-  const nozzleTempUnit = hass.states[entities.nozzle_temp_entity]?.attributes?.unit_of_measurement || '°C';
+  const bedTempUnit =
+    hass.states[entities.bed_temp_entity]?.attributes?.unit_of_measurement ||
+    "°C";
+  const nozzleTempUnit =
+    hass.states[entities.nozzle_temp_entity]?.attributes?.unit_of_measurement ||
+    "°C";
 
   return html`
-    <div class="temperatures">
-      <div 
-        class="temp-item" 
-        @click=${() => handleControlClick('bed', entities.bedTemp, entities.bed_target_temp_entity)}
+    <div
+      class="temperatures ${hasMaterials ? "has-materials" : "no-materials"}"
+    >
+      <div
+        class="temp-item"
+        @click=${() =>
+          handleControlClick(
+            "bed",
+            entities.bedTemp,
+            entities.bed_target_temp_entity
+          )}
       >
         <div class="temp-value">
           ${formatTemperature(entities.bedTemp, bedTempUnit)}
         </div>
-        <div>${localize.t('temperatures.bed')}</div>
+        <div>${localize.t("temperatures.bed")}</div>
       </div>
 
-      <div 
+      <div
         class="temp-item"
-        @click=${() => handleControlClick('nozzle', entities.nozzleTemp, entities.nozzle_target_temp_entity)}
+        @click=${() =>
+          handleControlClick(
+            "nozzle",
+            entities.nozzleTemp,
+            entities.nozzle_target_temp_entity
+          )}
       >
         <div class="temp-value">
           ${formatTemperature(entities.nozzleTemp, nozzleTempUnit)}
         </div>
-        <div>${localize.t('temperatures.nozzle')}</div>
+        <div>${localize.t("temperatures.nozzle")}</div>
       </div>
 
-      <div 
+      <div
         class="temp-item"
-        @click=${() => handleControlClick('speed', hass.states[entities.speed_profile_entity]?.state || 'standard', entities.speed_profile_entity)}
+        @click=${() =>
+          handleControlClick(
+            "speed",
+            hass.states[entities.speed_profile_entity]?.state || "standard",
+            entities.speed_profile_entity
+          )}
       >
         <div class="temp-value">
-          ${(hass.states[entities.speed_profile_entity]?.state || 'standard').charAt(0).toUpperCase() + 
-            (hass.states[entities.speed_profile_entity]?.state || 'standard').slice(1)}
+          ${(hass.states[entities.speed_profile_entity]?.state || "standard")
+            .charAt(0)
+            .toUpperCase() +
+          (
+            hass.states[entities.speed_profile_entity]?.state || "standard"
+          ).slice(1)}
         </div>
-        <div>${localize.t('temperatures.speed')}</div>
+        <div>${localize.t("temperatures.speed")}</div>
       </div>
     </div>
 
