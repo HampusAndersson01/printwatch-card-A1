@@ -1,0 +1,124 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "dist/printwatch-a1-card.js"
+      - "package.json"
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Get current version from package.json
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current package.json version: $VERSION"
+
+      - name: Check if tag exists
+        id: check-tag
+        run: |
+          if git tag | grep -q "^v${{ steps.package-version.outputs.version }}$"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.package-version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.package-version.outputs.version }} does not exist"
+          fi
+
+      - name: Auto-increment patch version
+        id: bump-version
+        if: steps.check-tag.outputs.exists == 'true'
+        run: |
+          # Get current version and increment patch
+          CURRENT_VERSION="${{ steps.package-version.outputs.version }}"
+          MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+          MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+          PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Auto-incremented version from $CURRENT_VERSION to $NEW_VERSION"
+
+          # Update package.json
+          npm version $NEW_VERSION --no-git-tag-version
+
+          # Commit the version bump
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json
+          git commit -m "Auto-bump version to $NEW_VERSION [skip ci]" || exit 0
+          git push
+
+      - name: Set final version
+        id: final-version
+        run: |
+          if [ "${{ steps.check-tag.outputs.exists }}" == "true" ]; then
+            VERSION="${{ steps.bump-version.outputs.new_version }}"
+          else
+            VERSION="${{ steps.package-version.outputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Final version: $VERSION"
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.final-version.outputs.version }}
+          release_name: Printwatch A1 Card v${{ steps.final-version.outputs.version }}
+          body: |
+            ## What's Changed
+            - Automated release for Printwatch A1 Card v${{ steps.final-version.outputs.version }}
+            - Updated build file: `printwatch-a1-card.js`
+
+            ## Installation
+            This release is compatible with HACS (Home Assistant Community Store).
+
+            ### Manual Installation
+            1. Download `printwatch-a1-card.js`
+            2. Place it in your `www/community/printwatch-a1-card/` folder
+            3. Add the resource in Home Assistant
+
+            ### HACS Installation
+            1. Go to HACS → Frontend
+            2. Search for "Printwatch A1 Card"
+            3. Install and restart Home Assistant
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./dist/printwatch-a1-card.js
+          asset_name: printwatch-a1-card.js
+          asset_content_type: application/javascript
+
+      - name: Summary
+        run: |
+          echo "✅ Release v${{ steps.final-version.outputs.version }} created successfully!"
+          echo "📦 Asset uploaded: printwatch-a1-card.js"
+          echo "🔗 Release URL: ${{ steps.create-release.outputs.html_url }}"
