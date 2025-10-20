@@ -255,8 +255,8 @@ export const cardStyles = css`
   }
 
   .temperatures.no-materials {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .temperatures.has-materials::after {
